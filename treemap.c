@@ -106,7 +106,7 @@ Pair * searchTreeMap(TreeMap * tree, void* key) {
     else if(tree->lower_than(key,temp->pair->key) == 0)
       temp = temp->right;
     
-    else if(tree->lower_than(key,temp->pair->key) == 1)
+    else
       temp = temp->left;
   }
   
