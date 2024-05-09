@@ -39,3 +39,24 @@ Thu 09 May 2024 03:38:17 PM UTC:
  1 file changed, 19 insertions(+), 1 deletion(-)
  tests:  0|0
 857769d
+Thu 09 May 2024 03:42:40 PM UTC: 
+ treemap.c | 26 ++++----------------------
+ 1 file changed, 4 insertions(+), 22 deletions(-)
+In file included from test.c:4:
+treemap.c:79:2: error: expected identifier or ‘(’ before ‘/’ token
+   79 | */
+      |  ^
+test.c: In function ‘minimum_test’:
+test.c:225:19: error: implicit declaration of function ‘minimum’ [-Werror=implicit-function-declaration]
+  225 |     TreeNode* n = minimum(tree->root);
+      |                   ^~~~~~~
+test.c:225:19: error: initialization of ‘TreeNode *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+test.c:239:7: error: assignment to ‘TreeNode *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+  239 |     n = minimum(tree->root->left);
+      |       ^
+test.c:250:7: error: assignment to ‘TreeNode *’ from ‘int’ makes pointer from integer without a cast [-Werror=int-conversion]
+  250 |     n = minimum(tree->root);
+      |       ^
+cc1: all warnings being treated as errors
+Compilation failed
+cb14858
