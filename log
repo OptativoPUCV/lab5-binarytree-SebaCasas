@@ -8,3 +8,17 @@ Thu 09 May 2024 03:15:31 PM UTC:
  tests:  1|8
 total_score: 0/70
 2f9079b
+Thu 09 May 2024 03:26:26 PM UTC: 
+ treemap.c | 40 +++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 37 insertions(+), 3 deletions(-)
+In file included from test.c:4:
+test.c: In function ‘insertTreeMap’:
+treemap.c:49:10: error: ‘*newNode.pair’ is used uninitialized [-Werror=uninitialized]
+   49 |   newNode->pair->key = key;
+      |   ~~~~~~~^~~~~~
+treemap.c:50:10: error: ‘*newNode.pair’ is used uninitialized [-Werror=uninitialized]
+   50 |   newNode->pair->value = value;
+      |   ~~~~~~~^~~~~~
+cc1: all warnings being treated as errors
+Compilation failed
+ecb3bac
