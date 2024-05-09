@@ -100,12 +100,14 @@ Pair * searchTreeMap(TreeMap * tree, void* key) {
   TreeNode* temp = tree->root;
   
   while(temp != NULL) {
-    if(tree->lower_than(key,temp->pair->key) == 0)
-      temp = temp->right;
-    else if(tree->lower_than(key,temp->pair->key) == 1)
-      temp = temp->left;
-    else
+    if(is_equal(tree, key, temp->pair->key) == 0){
       return temp->pair;
+    }
+    else if(tree->lower_than(key,temp->pair->key) == 1)
+      temp = temp->right;
+    
+    else if(tree->lower_than(key,temp->pair->key) == 0)
+      temp = temp->left;
   }
   
   return NULL;  // Retorna NULL si la clave no se encuentra
