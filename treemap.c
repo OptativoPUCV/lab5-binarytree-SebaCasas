@@ -100,9 +100,9 @@ Pair * searchTreeMap(TreeMap * tree, void* key) {
   TreeNode* temp = tree->root;
   
   while(temp != NULL) {
-    if(tree->lower_than(key,temp->pair->key) == 1)
+    if(tree->lower_than(key,temp->pair->key) == 0)
       temp = temp->right;
-    else if(tree->lower_than(key,temp->pair->key) == 0)
+    else if(tree->lower_than(key,temp->pair->key) == 1)
       temp = temp->left;
     else
       return temp->pair;
