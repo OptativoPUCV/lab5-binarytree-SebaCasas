@@ -22,3 +22,9 @@ treemap.c:50:10: error: ‘*newNode.pair’ is used uninitialized [-Werror=unini
 cc1: all warnings being treated as errors
 Compilation failed
 ecb3bac
+Thu 09 May 2024 03:27:38 PM UTC: 
+ treemap.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
+ tests:  3|8
+total_score: 0/70
+d195fc4
