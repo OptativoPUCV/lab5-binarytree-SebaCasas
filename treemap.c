@@ -79,53 +79,39 @@ void removeNode(TreeMap * tree, TreeNode* node) {
   if (node == NULL)
     return;
 
-  if (node->left == NULL && node->right == NULL) {
-    if (node->parent == NULL) {
-      // Si el nodo es la raíz
+  if (node->left == NULL && node->right == NULL){
+    if (node->parent == NULL)
       tree->root = NULL;
-    }
-    else {
-    // Eliminar referencia del padre al nodo
+    else{
       if (node->parent->left == node)
         node->parent->left = NULL;
       else
         node->parent->right = NULL;
     }
-    free(node); // Liberar memoria del nodo
+    free(node);
     return;
   }
 
-  // Caso 2: El nodo tiene un solo hijo
-  if (node->left == NULL || node->right == NULL) {
+  if (node->left == NULL || node->right == NULL){
     TreeNode* child = (node->left != NULL) ? node->left : node->right;
-
-    // Actualizar el padre del hijo
     child->parent = node->parent;
-
-    // Actualizar la raíz si es necesario
     if (node->parent == NULL)
       tree->root = child;
-    else {
-      // Actualizar la referencia del padre al hijo
+    else{
       if (node->parent->left == node)
         node->parent->left = child;
       else
         node->parent->right = child;
     }
-    free(node); // Liberar memoria del nodo
+    free(node);
     return;
   }
 
-  // Caso 3: El nodo tiene dos hijos
-  // En este caso, necesitas encontrar el sucesor en orden del nodo para reemplazarlo.
   TreeNode* successor = node->right;
   while (successor->left != NULL)
     successor = successor->left;
-
-  // Copiar el par del sucesor al nodo que se está eliminando
+  
   node->pair = successor->pair;
-
-  // Eliminar el sucesor recursivamente
   removeNode(tree, successor);
 }
 
@@ -141,18 +127,15 @@ void eraseTreeMap(TreeMap * tree, void* key){
 Pair * searchTreeMap(TreeMap * tree, void* key) {
   tree->current = tree->root;
   
-  while(tree->current != NULL) {
-    if(is_equal(tree, key, tree->current->pair->key) == 1){
+  while(tree->current != NULL){
+    if(is_equal(tree, key, tree->current->pair->key) == 1)
       return tree->current->pair;
-    }
+    
     if(tree->lower_than(key,tree->current->pair->key) == 0)
       tree->current = tree->current->right;
-    
-    else
-      tree->current = tree->current->left;
+    else tree->current = tree->current->left;
   }
-  
-  return NULL;  // Retorna NULL si la clave no se encuentra
+  return NULL;
 }
 
 Pair * upperBound(TreeMap * tree, void* key) {
@@ -163,22 +146,16 @@ Pair * upperBound(TreeMap * tree, void* key) {
   TreeNode* result = NULL;
 
   while (current != NULL) {
-    // Si la clave actual es mayor o igual que la clave dada, actualizamos el resultado y exploramos el subárbol izquierdo.
-    if (tree->lower_than(current->pair->key, key) == 0) {
+    if (tree->lower_than(current->pair->key, key) == 0){
       result = current;
       current = current->left;
     } 
-    else {
-      // Si la clave actual es menor, exploramos el subárbol derecho.
-      current = current->right;
-    }
+    else current = current->right;
   }
-
-  // Devolvemos el resultado encontrado.
   if (result != NULL)
     return result->pair;
   else
-    return NULL; // No se encontró ninguna clave mayor o igual que la dada.
+    return NULL;
 }
 
 Pair * firstTreeMap(TreeMap * tree) {
@@ -191,39 +168,30 @@ Pair * nextTreeMap(TreeMap * tree) {
     return NULL;
 
   TreeNode* current = tree->current;
-
-  // Si current es NULL, significa que aún no hemos comenzado el recorrido o hemos llegado al final.
-  if (current == NULL) {
-    // Buscar el nodo más izquierdo para empezar.
+  if (current == NULL){
     current = tree->root;
     while (current->left != NULL)
-    current = current->left;
+      current = current->left;
   } 
   else {
-    // Si current no es NULL, mover al siguiente nodo en orden.
-    if (current->right != NULL) {
-      // Si hay un hijo derecho, ir a la izquierda más profunda del hijo derecho.
+    if (current->right != NULL){
       current = current->right;
       while (current->left != NULL)
-                current = current->left;
-    } 
+        current = current->left;
+    }
     else {
-      // Si no hay un hijo derecho, ir hacia arriba hasta que seamos el hijo izquierdo de nuestro padre.
       TreeNode* parent = current->parent;
-            while (parent != NULL && current == parent->right) {
-                current = parent;
-                parent = parent->parent;
-            }
-          current = parent; // Aquí current puede ser NULL si hemos llegado a la raíz.
+      while (parent != NULL && current == parent->right){
+        current = parent;
+        parent = parent->parent;
+      }
+      current = parent;
     }
   }
 
-  // Actualizar el puntero current en el TreeMap.
   tree->current = current;
-
-  // Devolver el par correspondiente al nodo actual.
   if (current != NULL)
     return current->pair;
   else
-    return NULL; // Hemos llegado al final del árbol.
+    return NULL;
 }
