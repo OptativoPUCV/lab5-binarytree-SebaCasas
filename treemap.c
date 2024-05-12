@@ -76,58 +76,57 @@ TreeNode * minimum(TreeNode * x){
 
 
 void removeNode(TreeMap * tree, TreeNode* node) {
-    if (node == NULL)
-        return;
+  if (node == NULL)
+    return;
 
-    // Caso 1: El nodo es una hoja
-    if (node->left == NULL && node->right == NULL) {
-        if (node->parent == NULL) {
-            // Si el nodo es la raíz
-            tree->root = NULL;
-        } else {
-            // Eliminar referencia del padre al nodo
-            if (node->parent->left == node)
-                node->parent->left = NULL;
-            else
-                node->parent->right = NULL;
-        }
-        free(node); // Liberar memoria del nodo
-        return;
+  if (node->left == NULL && node->right == NULL) {
+    if (node->parent == NULL) {
+      // Si el nodo es la raíz
+      tree->root = NULL;
+    } else {
+    // Eliminar referencia del padre al nodo
+      if (node->parent->left == node)
+        node->parent->left = NULL;
+          else
+            node->parent->right = NULL;
+    }
+    free(node); // Liberar memoria del nodo
+    return;
+  }
+
+  // Caso 2: El nodo tiene un solo hijo
+  if (node->left == NULL || node->right == NULL) {
+    TreeNode* child = (node->left != NULL) ? node->left : node->right;
+
+    // Actualizar el padre del hijo
+    child->parent = node->parent;
+
+    // Actualizar la raíz si es necesario
+    if (node->parent == NULL)
+      tree->root = child;
+    else {
+      // Actualizar la referencia del padre al hijo
+      if (node->parent->left == node)
+        node->parent->left = child;
+      else
+        node->parent->right = child;
     }
 
-    // Caso 2: El nodo tiene un solo hijo
-    if (node->left == NULL || node->right == NULL) {
-        TreeNode* child = (node->left != NULL) ? node->left : node->right;
+    free(node); // Liberar memoria del nodo
+    return;
+  }
 
-        // Actualizar el padre del hijo
-        child->parent = node->parent;
+  // Caso 3: El nodo tiene dos hijos
+  // En este caso, necesitas encontrar el sucesor en orden del nodo para reemplazarlo.
+  TreeNode* successor = node->right;
+  while (successor->left != NULL)
+    successor = successor->left;
 
-        // Actualizar la raíz si es necesario
-        if (node->parent == NULL)
-            tree->root = child;
-        else {
-            // Actualizar la referencia del padre al hijo
-            if (node->parent->left == node)
-                node->parent->left = child;
-            else
-                node->parent->right = child;
-        }
+  // Copiar el par del sucesor al nodo que se está eliminando
+  node->pair = successor->pair;
 
-        free(node); // Liberar memoria del nodo
-        return;
-    }
-
-    // Caso 3: El nodo tiene dos hijos
-    // En este caso, necesitas encontrar el sucesor en orden del nodo para reemplazarlo.
-    TreeNode* successor = node->right;
-    while (successor->left != NULL)
-        successor = successor->left;
-
-    // Copiar el par del sucesor al nodo que se está eliminando
-    node->pair = successor->pair;
-
-    // Eliminar el sucesor recursivamente
-    removeNode(tree, successor);
+  // Eliminar el sucesor recursivamente
+  removeNode(tree, successor);
 }
 
 void eraseTreeMap(TreeMap * tree, void* key){
