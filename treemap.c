@@ -166,5 +166,41 @@ Pair * firstTreeMap(TreeMap * tree) {
 }
 
 Pair * nextTreeMap(TreeMap * tree) {
-  return NULL;
+    if (tree == NULL || tree->root == NULL)
+        return NULL;
+
+    TreeNode* current = tree->current;
+
+    // Si current es NULL, significa que aún no hemos comenzado el recorrido o hemos llegado al final.
+    if (current == NULL) {
+        // Buscar el nodo más izquierdo para empezar.
+        current = tree->root;
+        while (current->left != NULL)
+            current = current->left;
+    } else {
+        // Si current no es NULL, mover al siguiente nodo en orden.
+        if (current->right != NULL) {
+            // Si hay un hijo derecho, ir a la izquierda más profunda del hijo derecho.
+            current = current->right;
+            while (current->left != NULL)
+                current = current->left;
+        } else {
+            // Si no hay un hijo derecho, ir hacia arriba hasta que seamos el hijo izquierdo de nuestro padre.
+            TreeNode* parent = current->parent;
+            while (parent != NULL && current == parent->right) {
+                current = parent;
+                parent = parent->parent;
+            }
+            current = parent; // Aquí current puede ser NULL si hemos llegado a la raíz.
+        }
+    }
+
+    // Actualizar el puntero current en el TreeMap.
+    tree->current = current;
+
+    // Devolver el par correspondiente al nodo actual.
+    if (current != NULL)
+        return current->pair;
+    else
+        return NULL; // Hemos llegado al final del árbol.
 }
